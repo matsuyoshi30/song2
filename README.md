@@ -36,9 +36,9 @@ func main() {
         return
     }
 
-  	img, _, err := image.Decode(file)
+    img, _, err := image.Decode(file)
     if err != nil {
-        fmt.Fprintln(os.Stderr, err)
+        fmt.Println(err)
         return
     }
 
@@ -46,12 +46,12 @@ func main() {
 
     out, err := os.Create("./output.png")
     if err != nil {
-        fmt.Fprintln(os.Stderr, err)
+        fmt.Println(err)
         return
 	}
 
     if err := png.Encode(out, blured); err != nil {
-        fmt.Fprintln(os.Stderr, err)
+        fmt.Println(err)
         return
     }
 }
