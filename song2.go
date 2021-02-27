@@ -6,6 +6,8 @@ import (
 	"image"
 	"image/draw"
 	"math"
+	"runtime"
+	"sync"
 )
 
 func GaussianBlur(src image.Image, r float64) *image.RGBA {
@@ -14,23 +16,61 @@ func GaussianBlur(src image.Image, r float64) *image.RGBA {
 
 	bxs := BoxesForGauss(r, 3)
 
-	boxBlur(clone, dst, (bxs[0]-1)/2)
-	boxBlur(clone, dst, (bxs[1]-1)/2)
-	boxBlur(clone, dst, (bxs[2]-1)/2)
+	for _, b := range bxs {
+		boxBlur(clone, dst, (b-1)/2)
+	}
 
 	return dst
 }
 
+type Direction int
+
+const (
+	dirX Direction = iota
+	dirY
+)
+
 func boxBlur(src, dst *image.RGBA, r int) {
-	boxBlurHorizontal(dst, src, r)
-	boxBlurTotal(src, dst, r)
+	height := src.Bounds().Max.Y - src.Bounds().Min.Y
+	width := src.Bounds().Max.X - src.Bounds().Min.X
+
+	boxBlurParallel(dirX, height, dst, src, r)
+	boxBlurParallel(dirY, width, src, dst, r)
 }
 
-func boxBlurHorizontal(src, dst *image.RGBA, r int) {
+func boxBlurParallel(d Direction, length int, src, dst *image.RGBA, r int) {
+	procs := runtime.NumCPU()
+	ps := length / procs
+
+	var wg sync.WaitGroup
+	for length > 0 {
+		start := length - ps
+		if start < 0 {
+			start = 0
+		}
+		end := length
+
+		length -= ps
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			switch d {
+			case dirX:
+				boxBlurHorizontal(src, dst, src.Bounds().Min.Y+start, src.Bounds().Min.Y+end, r)
+			case dirY:
+				boxBlurTotal(src, dst, src.Bounds().Min.X+start, src.Bounds().Min.X+end, r)
+			}
+		}()
+	}
+
+	wg.Wait()
+}
+
+func boxBlurHorizontal(src, dst *image.RGBA, start, end, r int) {
 	fr := float64(r)
 	iarr := 1.0 / (fr + fr + 1.0)
 
-	for i := src.Bounds().Min.Y; i < src.Bounds().Max.Y; i++ {
+	for i := start; i < end; i++ {
 		ti := src.Bounds().Min.X
 		li := ti
 		ri := ti + r
@@ -124,11 +164,11 @@ func boxBlurHorizontal(src, dst *image.RGBA, r int) {
 	}
 }
 
-func boxBlurTotal(src, dst *image.RGBA, r int) {
+func boxBlurTotal(src, dst *image.RGBA, start, end, r int) {
 	fr := float64(r)
 	iarr := 1.0 / (fr + fr + 1.0)
 
-	for i := src.Bounds().Min.X; i < src.Bounds().Max.X; i++ {
+	for i := start; i < end; i++ {
 		ti := src.Bounds().Min.Y
 		li := ti
 		ri := ti + r

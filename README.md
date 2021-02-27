@@ -2,7 +2,7 @@
 
 Fast (linear time) implementation of the Gaussian Blur algorithm in Go.
 
-Original taken from http://blog.ivank.net/fastest-gaussian-blur.html
+Original algorithm taken from http://blog.ivank.net/fastest-gaussian-blur.html, and use goroutine.
 
 
 ## Install & Usage
@@ -83,6 +83,8 @@ Author:
 
 ## Example
 
+`song2 -o assets/blured.png assets/sample.png`
+
 |  Original                      |  Blured                      |
 | ------------------------------ | ---------------------------- |
 | ![original](assets/sample.png) | ![blured](assets/blured.png) |
@@ -100,12 +102,12 @@ goos: darwin
 goarch: amd64
 pkg: github.com/matsuyoshi30/song2
 cpu: Intel(R) Core(TM) i5-5287U CPU @ 2.90GHz
-BenchmarkGaussianBlurAnotherAlgorithm1-4   	       1	9861596371 ns/op	 3145872 B/op	  262148 allocs/op
-BenchmarkGaussianBlurAnotherAlgorithm2-4   	       1	1385716955 ns/op	 5243072 B/op	  786440 allocs/op
-BenchmarkGaussianBlurAnotherAlgorithm3-4   	       4	 304907248 ns/op	11534572 B/op	 2359301 allocs/op
-BenchmarkGaussianBlur-4                    	      22	  51529036 ns/op	 2097317 B/op	       5 allocs/op
-BenchmarkStackblur-4                       	      40	  25492248 ns/op	 3146072 B/op	  524301 allocs/op
-BenchmarkBildBlur-4                        	      30	  40405083 ns/op	 4244916 B/op	      22 allocs/op
+BenchmarkGaussianBlurAnotherAlgorithm1-4   	       1	10073325776 ns/op	 3145888 B/op	  262148 allocs/op
+BenchmarkGaussianBlurAnotherAlgorithm2-4   	       1	1365498035 ns/op	 5243088 B/op	  786440 allocs/op
+BenchmarkGaussianBlurAnotherAlgorithm3-4   	       4	 318496693 ns/op	11534604 B/op	 2359301 allocs/op
+BenchmarkGaussianBlur-4                    	      51	  24086941 ns/op	 2097965 B/op	      12 allocs/op
+BenchmarkStackblur-4                       	      48	  24818379 ns/op	 3146072 B/op	  524301 allocs/op
+BenchmarkBildBlur-4                        	      30	  37115297 ns/op	 4244496 B/op	      21 allocs/op
 ```
 
 reference [stackblur-go](https://github.com/esimov/stackblur-go) and [bild](https://github.com/anthonynsimon/bild).
