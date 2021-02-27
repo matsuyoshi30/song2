@@ -15,7 +15,7 @@ func GaussianBlur(src image.Image, r float64) *image.RGBA {
 	bxs := BoxesForGauss(r, 3)
 
 	boxBlur(clone, dst, (bxs[0]-1)/2)
-	boxBlur(dst, clone, (bxs[1]-1)/2)
+	boxBlur(clone, dst, (bxs[1]-1)/2)
 	boxBlur(clone, dst, (bxs[2]-1)/2)
 
 	return dst
