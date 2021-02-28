@@ -4,6 +4,7 @@ package song2
 
 import (
 	"image"
+	"image/color"
 	"image/draw"
 	"math"
 	"runtime"
@@ -110,10 +111,7 @@ func boxBlurHorizontal(src, dst *image.RGBA, start, end, r int) {
 			_b := uint8(math.Round(float64(val_b) * iarr))
 			_a := uint8(math.Round(float64(val_a) * iarr))
 
-			dst.Pix[(i-dst.Rect.Min.Y)*dst.Stride+(ti-dst.Rect.Min.X)*4+0] = _r
-			dst.Pix[(i-dst.Rect.Min.Y)*dst.Stride+(ti-dst.Rect.Min.X)*4+1] = _g
-			dst.Pix[(i-dst.Rect.Min.Y)*dst.Stride+(ti-dst.Rect.Min.X)*4+2] = _b
-			dst.Pix[(i-dst.Rect.Min.Y)*dst.Stride+(ti-dst.Rect.Min.X)*4+3] = _a
+			dst.SetRGBA(ti, i, color.RGBA{_r, _g, _b, _a})
 			ti++
 		}
 
@@ -134,10 +132,7 @@ func boxBlurHorizontal(src, dst *image.RGBA, start, end, r int) {
 			_b := uint8(math.Round(float64(val_b) * iarr))
 			_a := uint8(math.Round(float64(val_a) * iarr))
 
-			dst.Pix[(i-dst.Rect.Min.Y)*dst.Stride+(ti-dst.Rect.Min.X)*4+0] = _r
-			dst.Pix[(i-dst.Rect.Min.Y)*dst.Stride+(ti-dst.Rect.Min.X)*4+1] = _g
-			dst.Pix[(i-dst.Rect.Min.Y)*dst.Stride+(ti-dst.Rect.Min.X)*4+2] = _b
-			dst.Pix[(i-dst.Rect.Min.Y)*dst.Stride+(ti-dst.Rect.Min.X)*4+3] = _a
+			dst.SetRGBA(ti, i, color.RGBA{_r, _g, _b, _a})
 			ti++
 		}
 
@@ -155,10 +150,7 @@ func boxBlurHorizontal(src, dst *image.RGBA, start, end, r int) {
 			_b := uint8(math.Round(float64(val_b) * iarr))
 			_a := uint8(math.Round(float64(val_a) * iarr))
 
-			dst.Pix[(i-dst.Rect.Min.Y)*dst.Stride+(ti-dst.Rect.Min.X)*4+0] = _r
-			dst.Pix[(i-dst.Rect.Min.Y)*dst.Stride+(ti-dst.Rect.Min.X)*4+1] = _g
-			dst.Pix[(i-dst.Rect.Min.Y)*dst.Stride+(ti-dst.Rect.Min.X)*4+2] = _b
-			dst.Pix[(i-dst.Rect.Min.Y)*dst.Stride+(ti-dst.Rect.Min.X)*4+3] = _a
+			dst.SetRGBA(ti, i, color.RGBA{_r, _g, _b, _a})
 			ti++
 		}
 	}
@@ -208,10 +200,7 @@ func boxBlurTotal(src, dst *image.RGBA, start, end, r int) {
 			_b := uint8(math.Round(float64(val_b) * iarr))
 			_a := uint8(math.Round(float64(val_a) * iarr))
 
-			dst.Pix[(ti-dst.Rect.Min.Y)*dst.Stride+(i-dst.Rect.Min.X)*4+0] = _r
-			dst.Pix[(ti-dst.Rect.Min.Y)*dst.Stride+(i-dst.Rect.Min.X)*4+1] = _g
-			dst.Pix[(ti-dst.Rect.Min.Y)*dst.Stride+(i-dst.Rect.Min.X)*4+2] = _b
-			dst.Pix[(ti-dst.Rect.Min.Y)*dst.Stride+(i-dst.Rect.Min.X)*4+3] = _a
+			dst.SetRGBA(ti, i, color.RGBA{_r, _g, _b, _a})
 			ti++
 		}
 
@@ -232,10 +221,7 @@ func boxBlurTotal(src, dst *image.RGBA, start, end, r int) {
 			_b := uint8(math.Round(float64(val_b) * iarr))
 			_a := uint8(math.Round(float64(val_a) * iarr))
 
-			dst.Pix[(ti-dst.Rect.Min.Y)*dst.Stride+(i-dst.Rect.Min.X)*4+0] = _r
-			dst.Pix[(ti-dst.Rect.Min.Y)*dst.Stride+(i-dst.Rect.Min.X)*4+1] = _g
-			dst.Pix[(ti-dst.Rect.Min.Y)*dst.Stride+(i-dst.Rect.Min.X)*4+2] = _b
-			dst.Pix[(ti-dst.Rect.Min.Y)*dst.Stride+(i-dst.Rect.Min.X)*4+3] = _a
+			dst.SetRGBA(ti, i, color.RGBA{_r, _g, _b, _a})
 			ti++
 		}
 
@@ -253,10 +239,7 @@ func boxBlurTotal(src, dst *image.RGBA, start, end, r int) {
 			_b := uint8(math.Round(float64(val_b) * iarr))
 			_a := uint8(math.Round(float64(val_a) * iarr))
 
-			dst.Pix[(ti-dst.Rect.Min.Y)*dst.Stride+(i-dst.Rect.Min.X)*4+0] = _r
-			dst.Pix[(ti-dst.Rect.Min.Y)*dst.Stride+(i-dst.Rect.Min.X)*4+1] = _g
-			dst.Pix[(ti-dst.Rect.Min.Y)*dst.Stride+(i-dst.Rect.Min.X)*4+2] = _b
-			dst.Pix[(ti-dst.Rect.Min.Y)*dst.Stride+(i-dst.Rect.Min.X)*4+3] = _a
+			dst.SetRGBA(ti, i, color.RGBA{_r, _g, _b, _a})
 			ti++
 		}
 	}
