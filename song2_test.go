@@ -1,4 +1,4 @@
-package song2_test
+package song2
 
 import (
 	"fmt"
@@ -11,7 +11,6 @@ import (
 	"testing"
 
 	"github.com/anthonynsimon/bild/blur"
-	"github.com/matsuyoshi30/song2"
 )
 
 var (
@@ -44,19 +43,19 @@ func init() {
 	r = 5.0
 }
 
-func BenchmarkGaussianBlurAnotherAlgorithm1(b *testing.B) {
+func BenchmarkGaussianBlur1(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		SimpleGaussianBlur(img, r)
 	}
 }
 
-func BenchmarkGaussianBlurAnotherAlgorithm2(b *testing.B) {
+func BenchmarkGaussianBlur2(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		GaussianBlurUsingBox(img, r)
 	}
 }
 
-func BenchmarkGaussianBlurAnotherAlgorithm3(b *testing.B) {
+func BenchmarkGaussianBlur3(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		GaussianBlurHT(img, r)
 	}
@@ -64,7 +63,7 @@ func BenchmarkGaussianBlurAnotherAlgorithm3(b *testing.B) {
 
 func BenchmarkGaussianBlur(b *testing.B) {
 	for n := 0; n < b.N; n++ {
-		song2.GaussianBlur(img, r)
+		song2WithoutGoroutine(img, r)
 	}
 }
 
@@ -80,9 +79,15 @@ func BenchmarkBildBlur(b *testing.B) {
 	}
 }
 
+func BenchmarkGaussianBlurUsingGoroutine(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		GaussianBlur(img, r)
+	}
+}
+
 // SimpleGaussianBlur implements super naive Gaussian Blur
 func SimpleGaussianBlur(src image.Image, r float64) *image.RGBA {
-	clone := song2.CloneToRGBA(src)
+	clone := CloneToRGBA(src)
 
 	dst := image.NewRGBA(src.Bounds())
 
@@ -114,7 +119,7 @@ func SimpleGaussianBlur(src image.Image, r float64) *image.RGBA {
 			val.G = uint8(math.Round(_g / wSum))
 			val.B = uint8(math.Round(_b / wSum))
 
-			dst.Set(int(j), int(i), val)
+			dst.SetRGBA(int(j), int(i), val)
 		}
 	}
 
@@ -123,8 +128,8 @@ func SimpleGaussianBlur(src image.Image, r float64) *image.RGBA {
 
 // GaussianBlurUsingBox implements the convolution of box blur
 func GaussianBlurUsingBox(src image.Image, r float64) *image.RGBA {
-	clone := song2.CloneToRGBA(src)
-	bxs := song2.BoxesForGauss(r, 3)
+	clone := CloneToRGBA(src)
+	bxs := BoxesForGauss(r, 3)
 
 	dst := image.NewRGBA(src.Bounds())
 	boxBlur2(clone, dst, (bxs[0]-1)/2)
@@ -157,15 +162,15 @@ func boxBlur2(src, dst *image.RGBA, r int) {
 			val.G = uint8(_g / ((r + r + 1) * (r + r + 1)))
 			val.B = uint8(_b / ((r + r + 1) * (r + r + 1)))
 
-			dst.Set(int(j), int(i), val)
+			dst.SetRGBA(int(j), int(i), val)
 		}
 	}
 }
 
 // GaussianBlurHT implements blur using horizontal and total
 func GaussianBlurHT(src image.Image, r float64) *image.RGBA {
-	clone := song2.CloneToRGBA(src)
-	bxs := song2.BoxesForGauss(r, 3)
+	clone := CloneToRGBA(src)
+	bxs := BoxesForGauss(r, 3)
 
 	dst := image.NewRGBA(src.Bounds())
 	boxBlurHT(clone, dst, (bxs[0]-1)/2)
@@ -178,7 +183,8 @@ func GaussianBlurHT(src image.Image, r float64) *image.RGBA {
 func boxBlurHT(src, dst *image.RGBA, r int) {
 	for y := src.Bounds().Min.Y; y < src.Bounds().Max.Y; y++ {
 		for x := src.Bounds().Min.X; x < src.Bounds().Max.X; x++ {
-			dst.Set(x, y, src.At(x, y))
+			r, g, b, a := src.At(x, y).RGBA()
+			dst.SetRGBA(x, y, color.RGBA{uint8(r), uint8(g), uint8(b), uint8(a)})
 		}
 	}
 
@@ -206,7 +212,7 @@ func boxBlur_H(src, dst *image.RGBA, r int) {
 			val.G = uint8(_g / (r + r + 1))
 			val.B = uint8(_b / (r + r + 1))
 
-			dst.Set(int(j), int(i), val)
+			dst.SetRGBA(int(j), int(i), val)
 		}
 	}
 }
@@ -231,7 +237,21 @@ func boxBlur_T(src, dst *image.RGBA, r int) {
 			val.G = uint8(_g / (r + r + 1))
 			val.B = uint8(_b / (r + r + 1))
 
-			dst.Set(int(j), int(i), val)
+			dst.SetRGBA(int(j), int(i), val)
 		}
 	}
+}
+
+func song2WithoutGoroutine(src image.Image, r float64) *image.RGBA {
+	clone := CloneToRGBA(src)
+	dst := CloneToRGBA(src)
+
+	bxs := BoxesForGauss(r, 3)
+
+	for _, b := range bxs {
+		boxBlurHorizontal(dst, clone, dst.Bounds().Min.Y, dst.Bounds().Max.Y, (b-1)/2)
+		boxBlurTotal(clone, dst, src.Bounds().Min.X, src.Bounds().Max.X, (b-1)/2)
+	}
+
+	return dst
 }

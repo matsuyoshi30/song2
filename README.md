@@ -102,12 +102,13 @@ goos: darwin
 goarch: amd64
 pkg: github.com/matsuyoshi30/song2
 cpu: Intel(R) Core(TM) i5-5287U CPU @ 2.90GHz
-BenchmarkGaussianBlurAnotherAlgorithm1-4   	       1	10073325776 ns/op	 3145888 B/op	  262148 allocs/op
-BenchmarkGaussianBlurAnotherAlgorithm2-4   	       1	1365498035 ns/op	 5243088 B/op	  786440 allocs/op
-BenchmarkGaussianBlurAnotherAlgorithm3-4   	       4	 318496693 ns/op	11534604 B/op	 2359301 allocs/op
-BenchmarkGaussianBlur-4                    	      51	  24086941 ns/op	 2097965 B/op	      12 allocs/op
-BenchmarkStackblur-4                       	      48	  24818379 ns/op	 3146072 B/op	  524301 allocs/op
-BenchmarkBildBlur-4                        	      30	  37115297 ns/op	 4244496 B/op	      21 allocs/op
+BenchmarkGaussianBlur1-4                	       1	12656993105 ns/op	 2097280 B/op	       4 allocs/op
+BenchmarkGaussianBlur2-4                	       1	1649545490 ns/op	 2097304 B/op	       5 allocs/op
+BenchmarkGaussianBlur3-4                	       4	 263524278 ns/op	 2097310 B/op	       5 allocs/op
+BenchmarkGaussianBlur-4                 	      18	  56368998 ns/op	 2097309 B/op	       5 allocs/op
+BenchmarkStackblur-4                    	      40	  28339048 ns/op	 3146083 B/op	  524301 allocs/op
+BenchmarkBildBlur-4                     	      24	  48113312 ns/op	 4245167 B/op	      22 allocs/op
+BenchmarkGaussianBlurUsingGoroutine-4   	      39	  29797842 ns/op	 2097535 B/op	      11 allocs/op
 ```
 
 reference [stackblur-go](https://github.com/esimov/stackblur-go) and [bild](https://github.com/anthonynsimon/bild).
