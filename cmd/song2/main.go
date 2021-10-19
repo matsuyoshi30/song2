@@ -59,6 +59,7 @@ func run(src string) int {
 		fmt.Fprintln(os.Stderr, err)
 		return exitCodeErr
 	}
+	defer file.Close()
 
 	img, _, err := image.Decode(file)
 	if err != nil {
@@ -73,6 +74,7 @@ func run(src string) int {
 		fmt.Fprintln(os.Stderr, err)
 		return exitCodeErr
 	}
+	defer out.Close()
 
 	if err := png.Encode(out, blured); err != nil {
 		fmt.Fprintln(os.Stderr, err)
