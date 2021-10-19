@@ -200,7 +200,7 @@ func BoxBlurTotal(src, dst *image.RGBA, start, end, r int) {
 			_b := uint8(math.Round(float64(val_b) * iarr))
 			_a := uint8(math.Round(float64(val_a) * iarr))
 
-			dst.SetRGBA(ti, i, color.RGBA{_r, _g, _b, _a})
+			dst.SetRGBA(i, ti, color.RGBA{_r, _g, _b, _a})
 			ti++
 		}
 
@@ -221,7 +221,7 @@ func BoxBlurTotal(src, dst *image.RGBA, start, end, r int) {
 			_b := uint8(math.Round(float64(val_b) * iarr))
 			_a := uint8(math.Round(float64(val_a) * iarr))
 
-			dst.SetRGBA(ti, i, color.RGBA{_r, _g, _b, _a})
+			dst.SetRGBA(i, ti, color.RGBA{_r, _g, _b, _a})
 			ti++
 		}
 
@@ -239,7 +239,7 @@ func BoxBlurTotal(src, dst *image.RGBA, start, end, r int) {
 			_b := uint8(math.Round(float64(val_b) * iarr))
 			_a := uint8(math.Round(float64(val_a) * iarr))
 
-			dst.SetRGBA(ti, i, color.RGBA{_r, _g, _b, _a})
+			dst.SetRGBA(i, ti, color.RGBA{_r, _g, _b, _a})
 			ti++
 		}
 	}
