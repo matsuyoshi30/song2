@@ -35,6 +35,7 @@ func main() {
         fmt.Println(err)
         return
     }
+    defer img.Close()
 
     img, _, err := image.Decode(file)
     if err != nil {
@@ -48,7 +49,8 @@ func main() {
     if err != nil {
         fmt.Println(err)
         return
-	}
+    }
+    defer out.Close()
 
     if err := png.Encode(out, blured); err != nil {
         fmt.Println(err)
