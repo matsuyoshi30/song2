@@ -1,4 +1,4 @@
-package song2
+package song2_test
 
 import (
 	"fmt"
@@ -11,6 +11,7 @@ import (
 	"testing"
 
 	"github.com/anthonynsimon/bild/blur"
+	"github.com/matsuyoshi30/song2"
 )
 
 var (
@@ -81,13 +82,13 @@ func BenchmarkBildBlur(b *testing.B) {
 
 func BenchmarkGaussianBlurUsingGoroutine(b *testing.B) {
 	for n := 0; n < b.N; n++ {
-		GaussianBlur(img, r)
+		song2.GaussianBlur(img, r)
 	}
 }
 
 // SimpleGaussianBlur implements super naive Gaussian Blur
 func SimpleGaussianBlur(src image.Image, r float64) *image.RGBA {
-	clone := CloneToRGBA(src)
+	clone := song2.CloneToRGBA(src)
 
 	dst := image.NewRGBA(src.Bounds())
 
@@ -128,8 +129,8 @@ func SimpleGaussianBlur(src image.Image, r float64) *image.RGBA {
 
 // GaussianBlurUsingBox implements the convolution of box blur
 func GaussianBlurUsingBox(src image.Image, r float64) *image.RGBA {
-	clone := CloneToRGBA(src)
-	bxs := BoxesForGauss(r, 3)
+	clone := song2.CloneToRGBA(src)
+	bxs := song2.BoxesForGauss(r, 3)
 
 	dst := image.NewRGBA(src.Bounds())
 	boxBlur2(clone, dst, (bxs[0]-1)/2)
@@ -169,8 +170,8 @@ func boxBlur2(src, dst *image.RGBA, r int) {
 
 // GaussianBlurHT implements blur using horizontal and total
 func GaussianBlurHT(src image.Image, r float64) *image.RGBA {
-	clone := CloneToRGBA(src)
-	bxs := BoxesForGauss(r, 3)
+	clone := song2.CloneToRGBA(src)
+	bxs := song2.BoxesForGauss(r, 3)
 
 	dst := image.NewRGBA(src.Bounds())
 	boxBlurHT(clone, dst, (bxs[0]-1)/2)
@@ -243,14 +244,14 @@ func boxBlur_T(src, dst *image.RGBA, r int) {
 }
 
 func song2WithoutGoroutine(src image.Image, r float64) *image.RGBA {
-	clone := CloneToRGBA(src)
-	dst := CloneToRGBA(src)
+	clone := song2.CloneToRGBA(src)
+	dst := song2.CloneToRGBA(src)
 
-	bxs := BoxesForGauss(r, 3)
+	bxs := song2.BoxesForGauss(r, 3)
 
 	for _, b := range bxs {
-		boxBlurHorizontal(dst, clone, dst.Bounds().Min.Y, dst.Bounds().Max.Y, (b-1)/2)
-		boxBlurTotal(clone, dst, src.Bounds().Min.X, src.Bounds().Max.X, (b-1)/2)
+		song2.BoxBlurHorizontal(dst, clone, dst.Bounds().Min.Y, dst.Bounds().Max.Y, (b-1)/2)
+		song2.BoxBlurTotal(clone, dst, src.Bounds().Min.X, src.Bounds().Max.X, (b-1)/2)
 	}
 
 	return dst

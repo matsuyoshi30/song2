@@ -57,9 +57,9 @@ func boxBlurParallel(d Direction, length int, src, dst *image.RGBA, r int) {
 			defer wg.Done()
 			switch d {
 			case dirX:
-				boxBlurHorizontal(src, dst, src.Bounds().Min.Y+start, src.Bounds().Min.Y+end, r)
+				BoxBlurHorizontal(src, dst, src.Bounds().Min.Y+start, src.Bounds().Min.Y+end, r)
 			case dirY:
-				boxBlurTotal(src, dst, src.Bounds().Min.X+start, src.Bounds().Min.X+end, r)
+				BoxBlurTotal(src, dst, src.Bounds().Min.X+start, src.Bounds().Min.X+end, r)
 			}
 		}()
 	}
@@ -67,7 +67,7 @@ func boxBlurParallel(d Direction, length int, src, dst *image.RGBA, r int) {
 	wg.Wait()
 }
 
-func boxBlurHorizontal(src, dst *image.RGBA, start, end, r int) {
+func BoxBlurHorizontal(src, dst *image.RGBA, start, end, r int) {
 	fr := float64(r)
 	iarr := 1.0 / (fr + fr + 1.0)
 
@@ -156,7 +156,7 @@ func boxBlurHorizontal(src, dst *image.RGBA, start, end, r int) {
 	}
 }
 
-func boxBlurTotal(src, dst *image.RGBA, start, end, r int) {
+func BoxBlurTotal(src, dst *image.RGBA, start, end, r int) {
 	fr := float64(r)
 	iarr := 1.0 / (fr + fr + 1.0)
 

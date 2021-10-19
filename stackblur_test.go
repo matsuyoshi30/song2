@@ -1,7 +1,7 @@
 // Copy from https://github.com/esimov/stackblur-go/blob/1dca7b403959202bd4901f51299f4515c61d712a/stackblur.go
 // in order to benchmark because I coundn't use stackblur-go as module.
 
-package song2
+package song2_test
 
 import (
 	"errors"
