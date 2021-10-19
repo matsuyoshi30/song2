@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	output = flag.String("o", "blured.png", "Write output image to specific filepath")
+	output = flag.String("o", "blurred.png", "Write output image to specific filepath")
 	radius = flag.Float64("r", 3.0, "Radius")
 
 	name = "song2"
@@ -29,7 +29,7 @@ func main() {
   %s [FLAGS] [FILE]
 
 FLAGS:
-  -o  Write output image to specifig filepath [default: blured.png]
+  -o  Write output image to specifig filepath [default: blurred.png]
   -r  Radius [default: 3.0]
 
 Author:
@@ -67,7 +67,7 @@ func run(src string) int {
 		return exitCodeErr
 	}
 
-	blured := song2.GaussianBlur(img, *radius)
+	blurred := song2.GaussianBlur(img, *radius)
 
 	out, err := os.Create(filepath.Join(pwd, *output))
 	if err != nil {
@@ -76,7 +76,7 @@ func run(src string) int {
 	}
 	defer out.Close()
 
-	if err := png.Encode(out, blured); err != nil {
+	if err := png.Encode(out, blurred); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		return exitCodeErr
 	}

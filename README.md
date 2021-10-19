@@ -43,7 +43,7 @@ func main() {
         return
     }
 
-    blured := song2.GaussianBlur(img, 3.0)
+    blurred := song2.GaussianBlur(img, 3.0)
 
     out, err := os.Create("./output.png")
     if err != nil {
@@ -52,7 +52,7 @@ func main() {
     }
     defer out.Close()
 
-    if err := png.Encode(out, blured); err != nil {
+    if err := png.Encode(out, blurred); err != nil {
         fmt.Println(err)
         return
     }
@@ -75,7 +75,7 @@ Usage:
   song2 [FLAGS] [FILE]
 
 FLAGS:
-  -o  Write output image to specifig filepath [default: blured.png]
+  -o  Write output image to specifig filepath [default: blurred.png]
   -r  Radius [default: 3.0]
 
 Author:
@@ -85,11 +85,11 @@ Author:
 
 ## Example
 
-`song2 -o assets/blured.png assets/sample.png`
+`song2 -o assets/blurred.png assets/sample.png`
 
 |  Original                      |  Blured                      |
 | ------------------------------ | ---------------------------- |
-| ![original](assets/sample.png) | ![blured](assets/blured.png) |
+| ![original](assets/sample.png) | ![blurred](assets/blurred.png) |
 
 This image is from http://sipi.usc.edu/database/database.php?volume=misc&image=10#top
 
