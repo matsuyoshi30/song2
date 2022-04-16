@@ -30,12 +30,12 @@ import (
 )
 
 func main() {
-    img, err := os.Open("./input.png")
+    file, err := os.Open("./input.png")
     if err != nil {
         fmt.Println(err)
         return
     }
-    defer img.Close()
+    defer file.Close()
 
     img, _, err := image.Decode(file)
     if err != nil {
